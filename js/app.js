@@ -111,6 +111,13 @@ function cardsNoMatch() {
   }, 500)
 }
 
+function addCount(card) {
+    if (!card.classList.contains('match')) {
+      count++;
+      moveCounter.textContent = count;
+    }
+} 
+
 /*Create a list of opened cards*/
 shuffledDeck.addEventListener('click', function(event) {
   let card = event.target;
@@ -120,6 +127,7 @@ shuffledDeck.addEventListener('click', function(event) {
         listOfOpenedCards.push(card);
     }
     if (listOfOpenedCards.length === 2) {
+      addCount(card);
       if (listOfOpenedCards[0].innerHTML === listOfOpenedCards[1].innerHTML) {
         сardsMatch();
       } 
@@ -128,8 +136,6 @@ shuffledDeck.addEventListener('click', function(event) {
       }
     }
   }
-  count++;
-  moveCounter.textContent = count;
   gameOver();
 });
  
