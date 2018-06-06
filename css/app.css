@@ -112,6 +112,12 @@ h1 {
     cursor: pointer;
 }
 
+.timer {
+    display: none;
+    float: center;
+    padding-left: 10px;
+}
+
 .winnerDiv {
     display: none;
     position: fixed;

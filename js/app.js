@@ -17,6 +17,13 @@ let interval;
 let sec = 0;
 let min = 0;
 let timeStart = false;
+
+/*
+ * Timer's style and text content 
+ */
+timer.style.display = "none";
+timer.textContent = min + " minutes " + sec + " seconds";
+
 /*
  * Initialize movecounter
  */
@@ -28,6 +35,46 @@ let count = 0;
  * Refreshing the page after clicking "refresh" button
  */
 restart.onclick = refreshPage;
+
+/*
+ * All timer's code collected in one function
+ */
+function timerStart() {
+   
+ /*
+ * Reset timer
+ */
+function resetTimer() {
+	clearInterval(interval);
+	sec = 0;
+	min = 0;
+}
+
+ /*
+ * Start timer
+ */
+function startTimer() {
+	interval = setInterval(function() {
+		timer.textContent = min + " minutes " + sec + " seconds ";
+		sec++;
+		if (sec === 60) {
+			min++;
+			sec = 0;
+		}
+	}, 1000)
+}
+
+ /*
+ * Show timer's block on the page
+ */
+if (!timeStart) {
+		startTimer();
+		timeStart = true;
+		timer.style.display = "inline-block";
+	}
+}	
+
+timerStart();
 
 /*
  * Create a list that holds all of your cards
@@ -152,7 +199,7 @@ shuffledDeck.addEventListener('click', function(event) {
 function gameOver(){
   if (matches === 8){
     winnerDiv.style.display ='block';
-    winnerText.textContent = 'Congratulations! You are the winner! You completed the game with '+ count + ' moves';
+    winnerText.textContent = 'Congratulations! You are the winner! You completed the game with '+ count + ' moves. Elapsed time: ' + min + ' minutes and ' + sec + ' seconds!';
     playAgain.onclick = refreshPage;
   }
 }; 
