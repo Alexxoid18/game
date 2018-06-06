@@ -10,6 +10,14 @@ const winnerText = document.querySelector('.winnerText');
 const playAgain = document.querySelector('.playAgain');
 
 /*
+ * Variables for timer's functional
+ */
+let timer = document.querySelector('.timer');
+let interval;
+let sec = 0;
+let min = 0;
+let timeStart = false;
+/*
  * Initialize movecounter
  */
 const moveCounter = document.querySelector('span.moves');
@@ -90,16 +98,15 @@ function refreshPage() {
 function flipCard(card) {
   card.classList.add('open', 'show');
 }
-
-/*Add .match class for matching cards*/
+   
+/*Add .match and .disabled classes for matching cards*/
 function сardsMatch() {
   listOfOpenedCards[0].classList.remove('open', 'show');
-  listOfOpenedCards[0].classList.add('match');
+  listOfOpenedCards[0].classList.add('match', 'disabled');
   listOfOpenedCards[1].classList.remove('open', 'show');
-  listOfOpenedCards[1].classList.add('match');
+  listOfOpenedCards[1].classList.add('match', 'disabled');
   listOfOpenedCards = [];
   matches++;
-  
 }
 
 /*Remove classes for unmatching cards*/
@@ -111,20 +118,22 @@ function cardsNoMatch() {
   }, 500)
 }
 
+/*Starts counter for clicking cards without .match class*/
 function addCount(card) {
-    if (!card.classList.contains('match')) {
-      count++;
-      moveCounter.textContent = count;
-    }
+  if (!card.classList.contains('match')) {
+    count++;
+    moveCounter.textContent = count;
+  }
 } 
 
 /*Create a list of opened cards*/
 shuffledDeck.addEventListener('click', function(event) {
   let card = event.target;
+
   if (!card.classList.contains('open')) {
     if (listOfOpenedCards.length < 2) {
-        flipCard(card);
-        listOfOpenedCards.push(card);
+      flipCard(card);
+      listOfOpenedCards.push(card);
     }
     if (listOfOpenedCards.length === 2) {
       addCount(card);
