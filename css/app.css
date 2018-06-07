@@ -19,6 +19,7 @@ body {
 body {
     background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
     font-family: 'Coda', cursive;
+
 }
 
 .container {
@@ -141,6 +142,7 @@ h1 {
     width: 80%;
     font-size: 20px;
     border-radius: 25px;
+    white-space: pre-line;
 }
 
 .playAgain {

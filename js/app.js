@@ -8,7 +8,8 @@ let matches = 0;
 const winnerDiv = document.querySelector('.winnerDiv');
 const winnerText = document.querySelector('.winnerText');
 const playAgain = document.querySelector('.playAgain');
-
+const stars = document.querySelectorAll('.fa-star');
+let starsNumber;
 /*
  * Variables for timer's functional
  */
@@ -17,12 +18,6 @@ let interval;
 let sec = 0;
 let min = 0;
 let timeStart = false;
-
-/*
- * Timer's style and text content 
- */
-timer.style.display = "none";
-timer.textContent = min + " minutes " + sec + " seconds";
 
 /*
  * Initialize movecounter
@@ -40,7 +35,12 @@ restart.onclick = refreshPage;
  * All timer's code collected in one function
  */
 function timerStart() {
-   
+/*
+ * Timer's style and text content 
+ */
+timer.style.display = "none";
+timer.textContent = min + " minutes " + sec + " seconds";   
+ 
  /*
  * Reset timer
  */
@@ -165,14 +165,48 @@ function cardsNoMatch() {
   }, 500)
 }
 
+/*Remove stars depending on number of moves*/
+function changeStars() {
+	if (count === 15) {
+		for (let i = 0; i < stars.length - 2; i++) {
+			stars[i].parentElement.removeChild(stars[i]);	
+		}
+		console.log(stars);
+	}	
+	if (count === 20) {
+		for (let i = 1; i < stars.length - 1; i++) {
+			stars[i].parentElement.removeChild(stars[i]);	
+		}
+	}
+}
+
 /*Starts counter for clicking cards without .match class*/
 function addCount(card) {
   if (!card.classList.contains('match')) {
     count++;
     moveCounter.textContent = count;
   }
-} 
+  if (count <= 20 && count !== 0) {
+        changeStars();
+  }
+  let numberOfStars = starsRating();
+  return numberOfStars;
+  }
 
+ /*Return number of stars depending on number of moves*/
+function starsRating() {
+	if (count < 15) {
+		starsNumber = 3;
+	}
+	else if ((count >= 15) && (count < 20)) {
+		starsNumber = 2;
+	}
+	else starsNumber = 1;
+	//console.log(starsNumber);
+	return starsNumber;
+}	
+
+ 
 /*Create a list of opened cards*/
 shuffledDeck.addEventListener('click', function(event) {
   let card = event.target;
@@ -199,10 +233,11 @@ shuffledDeck.addEventListener('click', function(event) {
 function gameOver(){
   if (matches === 8){
     winnerDiv.style.display ='block';
-    winnerText.textContent = 'Congratulations! You are the winner! You completed the game with '+ count + ' moves. Elapsed time: ' + min + ' minutes and ' + sec + ' seconds!';
+    winnerText.textContent = 'Congratulations! You are the winner! You completed the game with '+ count + ' moves.\nElapsed time: ' + min + ' minutes and ' + sec + ' seconds! You got ' + starsNumber + ' star(s).';
     playAgain.onclick = refreshPage;
   }
 }; 
+
 
 
   
