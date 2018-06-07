@@ -233,7 +233,7 @@ shuffledDeck.addEventListener('click', function(event) {
 function gameOver(){
   if (matches === 8){
     winnerDiv.style.display ='block';
-    winnerText.textContent = 'Congratulations! You are the winner! You completed the game with '+ count + ' moves.\nElapsed time: ' + min + ' minutes and ' + sec + ' seconds! You got ' + starsNumber + ' star(s).';
+    winnerText.textContent = 'Congratulations! You are the winner! You completed the game with '+ count + ' moves.\nTime spent: ' + min + ' minutes and ' + sec + ' seconds! You got ' + starsNumber + ' star(s).';
     playAgain.onclick = refreshPage;
   }
 }; 
