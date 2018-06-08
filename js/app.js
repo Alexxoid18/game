@@ -1,13 +1,17 @@
 /*
  * Set the global variables
  */
-const deck = document.querySelector('.deck');
+ const deck = document.querySelector('.deck');
 const restart = document.querySelector('.restart');
 let listOfOpenedCards = [];
 let matches = 0;
+let newCard = document.querySelectorAll('.card');
 const winnerDiv = document.querySelector('.winnerDiv');
 const winnerText = document.querySelector('.winnerText');
 const playAgain = document.querySelector('.playAgain');
+const starsBlock = document.querySelector('.stars');
+const starsLi = document.querySelectorAll('.stars li');
+const oneStarsLi = document.querySelector('.stars li');
 const stars = document.querySelectorAll('.fa-star');
 let starsNumber;
 /*
@@ -27,14 +31,19 @@ moveCounter.textContent = '0';
 let count = 0;
 
 /*
- * Refreshing the page after clicking "refresh" button
+ * Starting new game after clicking "restart" button
  */
-restart.onclick = refreshPage;
+restart.onclick = newGame;
 
-/*
- * All timer's code collected in one function
+ /*
+ * Reset timer
  */
-function timerStart() {
+function resetTimer() {
+  clearInterval(interval);
+  sec = 0;
+  min = 0;
+}
+
 /*
  * Timer's style and text content 
  */
@@ -42,46 +51,37 @@ timer.style.display = "none";
 timer.textContent = min + " minutes " + sec + " seconds";   
  
  /*
- * Reset timer
- */
-function resetTimer() {
-	clearInterval(interval);
-	sec = 0;
-	min = 0;
-}
-
- /*
  * Start timer
  */
 function startTimer() {
-	interval = setInterval(function() {
-		timer.textContent = min + " minutes " + sec + " seconds ";
-		sec++;
-		if (sec === 60) {
-			min++;
-			sec = 0;
-		}
-	}, 1000)
+  interval = setInterval(function() {
+    timer.textContent = min + " minutes " + sec + " seconds ";
+    sec++;
+    if (sec === 60) {
+      min++;
+      sec = 0;
+    }
+  }, 1000)
 }
 
  /*
  * Show timer's block on the page
  */
 if (!timeStart) {
-		startTimer();
-		timeStart = true;
-		timer.style.display = "inline-block";
-	}
-}	
+    startTimer();
+    timeStart = true;
+    timer.style.display = "inline-block";
+  }
 
-timerStart();
+resetTimer();
+startTimer();
 
 /*
  * Create a list that holds all of your cards
  */
 function createList() {
   const listOfCards = document.getElementsByClassName('card');
- 	return listOfCards;
+  return listOfCards;
 }
  
  /*
@@ -97,7 +97,7 @@ function showCards(createdList) {
  * Create an array from the HTMLcollection
  */
 function listToArray(createdList) {
-	const array = Array.from(createdList());
+  const array = Array.from(createdList());
   return array; 
 }
  
@@ -105,9 +105,10 @@ function listToArray(createdList) {
  *   - shuffle the list of cards using the provided "shuffle" method below
  */
  // Shuffle function from http://stackoverflow.com/a/2450976
+
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
-	    while (currentIndex !== 0) {
+      while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
         temporaryValue = array[currentIndex];
@@ -118,9 +119,9 @@ function shuffle(array) {
 }
 
 showCards(createList);
-const initialDeckArray = listToArray(createList);
-const array = listToArray(createList);
-const shuffledArray = shuffle(array);
+let initialDeckArray = listToArray(createList);
+let array = listToArray(createList);
+let shuffledArray = shuffle(array);
 
 /*
  *  Create new deck from shuffled cards
@@ -134,11 +135,44 @@ function newDeck() {
   return deck;
 }
 
-const shuffledDeck = newDeck();
+let shuffledDeck = newDeck();
 
-/*Refresh the page*/
-function refreshPage() {
-  window.location.reload();
+/*Start new game*/
+function newGame() {
+
+  // Hide winner's message
+  winnerDiv.style.display ='none';
+  
+  count = 0;
+  matches = 0;
+  listOfOpenedCards = [];
+  moveCounter.textContent = '0';
+
+  //Return 3 stars
+  if (starsNumber === 2) {
+    starsBlock.appendChild(oneStarsLi);
+  }
+  else if (starsNumber === 1) {
+    starsBlock.appendChild(oneStarsLi);
+    starsBlock.appendChild(oneStarsLi.cloneNode(true));
+  }
+
+  resetTimer();
+  startTimer();
+
+  showCards(createList);
+  initialDeckArray = listToArray(createList);
+  array = listToArray(createList);
+  shuffledArray = shuffle(array);
+
+  /*Delete classes for initial state of deck*/
+  for (let i = 0; i < shuffledArray.length; i++) {
+    shuffledArray[i].classList.remove('open', 'show', 'match', 'disabled');
+  }
+ 
+  newDeck();
+  shuffledDeck = newDeck();
+  return shuffledDeck;
 } 
  
 /*Add classes to flip cards*/
@@ -167,17 +201,17 @@ function cardsNoMatch() {
 
 /*Remove stars depending on number of moves*/
 function changeStars() {
-	if (count === 15) {
-		for (let i = 0; i < stars.length - 2; i++) {
-			stars[i].parentElement.removeChild(stars[i]);	
-		}
-		console.log(stars);
-	}	
-	if (count === 20) {
-		for (let i = 1; i < stars.length - 1; i++) {
-			stars[i].parentElement.removeChild(stars[i]);	
-		}
-	}
+  if (count === 15) {
+    for (let i = 0; i < starsLi.length - 2; i++) {
+      //console.log(stars[i].parentElement);
+      starsLi[i].parentElement.removeChild(starsLi[i]); 
+    }
+  } 
+  if (count === 20) {
+    for (let i = 1; i < starsLi.length - 1; i++) {
+      starsLi[i].parentElement.removeChild(starsLi[i]); 
+    }
+  }
 }
 
 /*Starts counter for clicking cards without .match class*/
@@ -195,16 +229,15 @@ function addCount(card) {
 
  /*Return number of stars depending on number of moves*/
 function starsRating() {
-	if (count < 15) {
-		starsNumber = 3;
-	}
-	else if ((count >= 15) && (count < 20)) {
-		starsNumber = 2;
-	}
-	else starsNumber = 1;
-	//console.log(starsNumber);
-	return starsNumber;
-}	
+  if (count < 15) {
+    starsNumber = 3;
+  }
+  else if ((count >= 15) && (count < 20)) {
+    starsNumber = 2;
+  }
+  else starsNumber = 1;
+  return starsNumber;
+} 
 
  
 /*Create a list of opened cards*/
@@ -229,15 +262,12 @@ shuffledDeck.addEventListener('click', function(event) {
   gameOver();
 });
  
-/*Congratulation's window appear when all cards are matched*/  
+/*Congratulation's window appears when all cards are matched*/  
 function gameOver(){
   if (matches === 8){
     winnerDiv.style.display ='block';
     winnerText.textContent = 'Congratulations! You are the winner! You completed the game with '+ count + ' moves.\nTime spent: ' + min + ' minutes and ' + sec + ' seconds! You got ' + starsNumber + ' star(s).';
-    playAgain.onclick = refreshPage;
+    playAgain.onclick = newGame;
   }
-}; 
+};
 
-
-
-  
