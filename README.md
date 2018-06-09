@@ -2,19 +2,35 @@
 
 ## Table of Contents
 
+* [Dependencies](#Dependencies)
 * [Instructions](#instructions)
 * [Contributing](#contributing)
 
+
+## Dependencies
+
+The project is based on HTML/CSS and JavaScript, using Google Fonts and Font Awesome.
+
 ## Instructions
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+The project is a memory game, based on a chess grid.
 
-To get started, open `js/app.js` and start building out the app's functionality
+How to play: 
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+* A user selects a card and opens a chess piece.
+* If the second card is similar then the two chess pieces remain upside down.
+* The game ends when the user finds all the eight different matching combinations.
+* A pop-up window shows the final score of the user.
+
+Score calculation:
+
+Score is based on the player Moves:
+* If there are more than 15, a star is removed.
+* If there are more than 20, a second star is removed.
+
+Final score contains information about number of player's moves, conquered stars and time spent.
+
 
 ## Contributing
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
-
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+You can contribute to the project by pulling request.
