@@ -1,7 +1,7 @@
 /*
  * Set the global variables
  */
- const deck = document.querySelector('.deck');
+const deck = document.querySelector('.deck');
 const restart = document.querySelector('.restart');
 let listOfOpenedCards = [];
 let matches = 0;
@@ -203,7 +203,6 @@ function cardsNoMatch() {
 function changeStars() {
   if (count === 15) {
     for (let i = 0; i < starsLi.length - 2; i++) {
-      //console.log(stars[i].parentElement);
       starsLi[i].parentElement.removeChild(starsLi[i]); 
     }
   } 
@@ -267,6 +266,8 @@ function gameOver(){
   if (matches === 8){
     winnerDiv.style.display ='block';
     winnerText.textContent = 'Congratulations! You are the winner! You completed the game with '+ count + ' moves.\nTime spent: ' + min + ' minutes and ' + sec + ' seconds! You got ' + starsNumber + ' star(s).';
+    resetTimer();
+    timeStart = false;
     playAgain.onclick = newGame;
   }
 };
