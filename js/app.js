@@ -14,6 +14,7 @@ const starsLi = document.querySelectorAll('.stars li');
 const oneStarsLi = document.querySelector('.stars li');
 const stars = document.querySelectorAll('.fa-star');
 let starsNumber;
+
 /*
  * Variables for timer's functional
  */
@@ -139,6 +140,11 @@ let shuffledDeck = newDeck();
 
 /*Start new game*/
 function newGame() {
+  
+  /*Prevent from creating unnecessary stars*/
+  if (count === 0) {
+	starsNumber = 3;
+  }
 
   // Hide winner's message
   winnerDiv.style.display ='none';
